@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications | GovConnect</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>🇮🇳 GOVCONNECT</h1>
+    <p>My Applications</p>
+    
+<nav class="main-nav">
+    <a href="{{ url_for('home') }}">
+        <span>🏠</span> Home
+    </a>
+
+    <a href="{{ url_for('my_applications') }}">
+        <span>📋</span> My Applications
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <span>🚪</span> Logout
+    </a>
+</nav>
+
+</header>
+
+<main>
+    <section>
+        <h2>My Applied Jobs</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+
+        {% for application in applications %}
+        <div class="job-card">
+            <h3>{{ application.title }}</h3>
+
+            <p><strong>Department:</strong>
+                {{ application.department }}</p>
+
+            <p><strong>Applied Date:</strong>
+                {{ application.applied_date }}</p>
+
+            <p><strong>Last Date:</strong>
+                {{ application.last_date }}</p>
+
+            <p><strong>Tracking Status:</strong>
+                {{ application.status }}</p>
+
+            {% if application.link %}
+            <a href="{{ application.link }}"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visit Official Website
+            </a>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>You have not added any applications yet.</p>
+        {% endfor %}
+    </section>
+</main>
+
+<footer>
+    <p>GOVCONNECT | Government Employment Portal</p>
+</footer>
+
+</body>
+</html>

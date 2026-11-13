@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | GovConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>🇮🇳 GOVCONNECT ADMIN</h1>
+    <p>Government Employment Portal Management</p>
+    <nav>
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('home') }}">User Website</a>
+        <a href="{{ url_for('admin_logout') }}">Admin Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <h2>Welcome, Administrator!</h2>
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3>{{ jobs|length }}</h3>
+                <p>Total Jobs</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ user_count }}</h3>
+                <p>Registered Users</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Add Government Job</h2>
+
+        <form action="{{ url_for('add_job') }}" method="POST">
+            <input type="text" name="title"
+                   placeholder="Job Title" required>
+
+            <select name="department" required>
+                <option value="">Select Department</option>
+                <option>SSC</option>
+                <option>UPSC</option>
+                <option>Railway</option>
+                <option>Banking</option>
+                <option>APPSC</option>
+                <option>Other</option>
+            </select>
+
+            <select name="qualification" required>
+                <option value="">Required Qualification</option>
+                <option>10th Pass</option>
+                <option>Intermediate</option>
+                <option>Any Degree</option>
+                <option>B.Tech</option>
+                <option>Post Graduation</option>
+            </select>
+
+            <input type="number" name="min_age"
+                   placeholder="Minimum Age" min="18" required>
+
+            <input type="number" name="max_age"
+                   placeholder="Maximum Age" min="18" required>
+
+            <input type="text" name="salary"
+                   placeholder="Salary / Pay Scale" required>
+
+            <input type="number" name="vacancies"
+                   placeholder="Number of Vacancies" min="0" required>
+
+            <label>Application Last Date</label>
+            <input type="date" name="last_date" required>
+
+            <input type="url" name="link"
+                   placeholder="Official Notification URL">
+
+            <button type="submit">+ Add Government Job</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Manage Government Jobs</h2>
+
+        {% for job in jobs %}
+        <div class="job-card">
+            <h3>{{ job.title }}</h3>
+            <p><strong>Department:</strong> {{ job.department }}</p>
+            <p><strong>Last Date:</strong> {{ job.last_date }}</p>
+            <p><strong>Vacancies:</strong> {{ job.vacancies }}</p>
+
+            <form action="{{ url_for('update_job', job_id=job.id) }}"
+                  method="POST">
+                <select name="status">
+                    <option>Not Applied</option>
+                    <option>Applied</option>
+                    <option>Selected</option>
+                    <option>Rejected</option>
+                </select>
+                <button type="submit">Update Status</button>
+            </form>
+
+            <form action="{{ url_for('delete_job', job_id=job.id) }}"
+                  method="POST"
+                  onsubmit="return confirm('Delete this job?')">
+                <button type="submit" class="delete-btn">Delete Job</button>
+            </form>
+        </div>
+        {% else %}
+        <p>No jobs available.</p>
+        {% endfor %}
+    </section>
+</main>
+
+<footer>
+    <p>GOVCONNECT | Admin Dashboard</p>
+</footer>
+
+</body>
+</html>

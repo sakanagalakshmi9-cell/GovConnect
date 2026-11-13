@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GovConnect | Government Employment Portal</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <h1>🇮🇳 GOVCONNECT</h1>
+    <p>Government Jobs & Recruitment Portal</p>
+    <p>Opportunities for Every Citizen</p>
+
+    <nav class="main-nav">
+
+        <a href="#home">
+            <span>🏠</span> Home
+        </a>
+
+        <a href="#ambedkar">
+            <span>🇮🇳</span> Great Personalities
+        </a>
+
+        <a href="#eligibility">
+            <span>🎓</span> Eligibility
+        </a>
+
+        <a href="#jobs">
+            <span>💼</span> Job Listings
+        </a>
+
+        <a href="{{ url_for('my_applications') }}">
+            <span>📋</span> My Applications
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            <span>🚪</span> Logout
+        </a>
+
+    </nav>
+</header>
+
+
+<main id="home">
+
+    <!-- WELCOME SECTION -->
+    <section class="welcome-section">
+
+        <h2>Welcome to GovConnect!</h2>
+
+        <p>
+            Your trusted platform to explore government
+            employment opportunities.
+        </p>
+
+        <p>
+            Discover vacancies, check your eligibility
+            and keep track of your applications.
+        </p>
+
+        <a href="#jobs" class="explore-button">
+            Explore Government Jobs →
+        </a>
+
+    </section>
+
+
+    <!-- GREAT PERSONALITIES -->
+    <section class="profile-section" id="ambedkar">
+
+        <h2>Great Personalities of India</h2>
+
+        <div class="profile-card">
+
+            <div class="profile-content">
+
+                <span class="hero-label">
+                    THE ARCHITECT OF THE INDIAN CONSTITUTION
+                </span>
+
+                <h3>Dr. B. R. Ambedkar</h3>
+
+                <h4>14 April 1891 – 6 December 1956</h4>
+
+                <p>
+                    Dr. Bhimrao Ramji Ambedkar was an Indian
+                    jurist, economist and social reformer.
+                    He served as the Chairman of the Drafting
+                    Committee of the Constituent Assembly
+                    and was the first Law Minister of
+                    independent India.
+                </p>
+
+                <p>
+                    His contributions focused on constitutional
+                    values, equality, social justice and the
+                    rights of citizens.
+                </p>
+
+                <a href="https://www.mea.gov.in/ambedkar.htm"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Read Full Biography →
+
+                </a>
+
+            </div>
+
+            <div class="profile-image">
+
+                <img src="{{ url_for('static', filename='ambedkar.jpg') }}"
+                     alt="Dr. B. R. Ambedkar">
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ELIGIBILITY CHECKER -->
+    <section class="form-section" id="eligibility">
+
+        <h2>🎓 Check Your Job Eligibility</h2>
+
+        <p>
+            Enter your age and qualification to find
+            suitable government job opportunities.
+        </p>
+
+        <form action="{{ url_for('check_eligibility') }}"
+              method="POST">
+
+            <label>Your Age</label>
+
+            <input type="number"
+                   name="age"
+                   placeholder="Enter Your Age"
+                   min="18"
+                   required>
+
+            <label>Your Qualification</label>
+
+            <select name="qualification" required>
+
+                <option value="">
+                    Select Your Qualification
+                </option>
+
+                <option>10th Pass</option>
+                <option>Intermediate</option>
+                <option>Any Degree</option>
+                <option>B.Tech</option>
+                <option>Post Graduation</option>
+
+            </select>
+
+            <button type="submit">
+                Check Eligibility →
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- ELIGIBILITY RESULTS -->
+    {% if checked %}
+
+    <section class="form-section">
+
+        <h2>✅ Eligibility Results</h2>
+
+        {% if jobs %}
+
+            <p>Eligible jobs found for your profile.</p>
+
+            {% for job in jobs %}
+
+            <div class="job-card">
+
+                <h3>{{ job.title }}</h3>
+
+                <p>
+                    🏢 <strong>Department:</strong>
+                    {{ job.department }}
+                </p>
+
+                <p>
+                    🎓 <strong>Qualification:</strong>
+                    {{ job.qualification }}
+                </p>
+
+                <p>
+                    👤 <strong>Age Limit:</strong>
+                    {{ job.min_age }} - {{ job.max_age }} Years
+                </p>
+
+                <p>
+                    💰 <strong>Salary:</strong>
+                    {{ job.salary }}
+                </p>
+
+                <p>
+                    👥 <strong>Vacancies:</strong>
+                    {{ job.vacancies }}
+                </p>
+
+                {% if job.link %}
+
+                <a href="{{ job.link }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Official Notification ↗
+                </a>
+
+                {% endif %}
+
+                <form action="{{ url_for('apply_job', job_id=job.id) }}"
+                      method="POST">
+
+                    <button type="submit" class="apply-button">
+                        Apply Now →
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                No eligible jobs found.
+                Please check the official requirements.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- AVAILABLE GOVERNMENT JOBS -->
+    <section class="jobs-section" id="jobs">
+
+        <h2>💼 Available Government Jobs</h2>
+
+        <p>
+            Explore the latest government employment opportunities.
+        </p>
+
+        {% if jobs %}
+
+        <div class="jobs-container">
+
+            {% for job in jobs %}
+
+            <div class="job-card">
+
+                <span class="job-badge">
+                    Government Vacancy
+                </span>
+
+                <h3>💼 {{ job.title }}</h3>
+
+                <p>
+                    🏢 <strong>Department:</strong>
+                    {{ job.department }}
+                </p>
+
+                <p>
+                    🎓 <strong>Qualification:</strong>
+                    {{ job.qualification }}
+                </p>
+
+                <p>
+                    👤 <strong>Age Limit:</strong>
+                    {{ job.min_age }} - {{ job.max_age }} Years
+                </p>
+
+                <p>
+                    💰 <strong>Salary:</strong>
+                    {{ job.salary }}
+                </p>
+
+                <p>
+                    👥 <strong>Vacancies:</strong>
+                    {{ job.vacancies }}
+                </p>
+
+                <p>
+                    📅 <strong>Last Date:</strong>
+                    {{ job.last_date }}
+                </p>
+
+                {% if job.link %}
+
+                <a class="official-link"
+                   href="{{ job.link }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    View Official Notification ↗
+
+                </a>
+
+                {% endif %}
+
+                <form action="{{ url_for('apply_job', job_id=job.id) }}"
+                      method="POST">
+
+                    <button type="submit" class="apply-button">
+                        Apply Now →
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <p class="empty-message">
+            No government jobs available currently.
+            Please check again later.
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- MY APPLICATIONS LINK -->
+    <section class="application-section">
+
+        <h2>📋 Track Your Applications</h2>
+
+        <p>
+            View the jobs you have saved and check
+            your application tracking status.
+        </p>
+
+        <a href="{{ url_for('my_applications') }}"
+           class="explore-button">
+
+            View My Applications →
+
+        </a>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <h3>🇮🇳 GOVCONNECT</h3>
+
+    <p>Government Employment Portal</p>
+
+    <p>
+        Developed using Python, Flask, SQLite, HTML & CSS
+    </p>
+
+    <p>
+        Disclaimer: This is a student demo project,
+        not an official government website.
+    </p>
+
+    <p>© 2026 GovConnect. All Rights Reserved.</p>
+
+</footer>
+
+</body>
+</html>

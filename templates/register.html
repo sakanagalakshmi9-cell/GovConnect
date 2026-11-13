@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | GovConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+
+<header class="auth-header">
+    <h1>🇮🇳 GOVCONNECT</h1>
+    <p>Government Jobs & Recruitment Portal</p>
+</header>
+
+<main class="auth-main">
+    <section class="auth-card">
+        <div class="auth-icon">👤</div>
+
+        <h2>Create Your Account</h2>
+        <p class="auth-subtitle">
+            Join GovConnect and explore government career opportunities.
+        </p>
+
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <div class="alert-message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST">
+            <label>Full Name</label>
+            <input type="text" name="name"
+                   placeholder="Enter your full name"
+                   minlength="2" maxlength="100" required>
+
+            <label>Email Address</label>
+            <input type="email" name="email"
+                   placeholder="Enter your email address" required>
+
+            <label>Create Password</label>
+            <input type="password" name="password"
+                   placeholder="Minimum 8 characters"
+                   minlength="8" required>
+
+            <button type="submit" class="auth-button">
+                Create My Account →
+            </button>
+        </form>
+
+        <div class="auth-bottom">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Login Here</a>
+        </div>
+
+        <a href="{{ url_for('login') }}" class="back-home">
+            Back to Login
+        </a>
+    </section>
+</main>
+
+<footer>
+    <p>GOVCONNECT | Government Employment Portal</p>
+    <p>Empowering Aspirations Through Opportunities</p>
+</footer>
+
+</body>
+</html>

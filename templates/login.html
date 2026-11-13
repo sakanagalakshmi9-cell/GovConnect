@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | GovConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>GOVCONNECT</h1>
+        <p>Government Jobs & Recruitment Portal</p>
+    </header>
+
+    <main>
+        <section class="form-section">
+            <h2>Login to GovConnect</h2>
+            <p>Enter your account details to continue.</p>
+
+            {% with messages = get_flashed_messages() %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST">
+                <input type="email" name="email"
+                       placeholder="Enter Email Address" required>
+
+                <input type="password" name="password"
+                       placeholder="Enter Password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p>New user? <a href="{{ url_for('register') }}">Create an account</a></p>
+        </section>
+    </main>
+
+</body>
+</html>

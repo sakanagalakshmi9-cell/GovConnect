@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | GovConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+    <header class="auth-header">
+        <h1>GOVCONNECT ADMIN</h1>
+        <p>Administrator Login Portal</p>
+    </header>
+
+    <main class="auth-main">
+        <section class="auth-card">
+            <h2>Admin Login</h2>
+
+            {% with messages = get_flashed_messages() %}
+                {% for message in messages %}
+                    <p class="alert-message">{{ message }}</p>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST">
+                <label>Username</label>
+                <input type="text" name="username" required>
+
+                <label>Password</label>
+                <input type="password" name="password" required>
+
+                <button type="submit" class="auth-button">
+                    Login as Admin
+                </button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
