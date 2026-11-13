@@ -183,9 +183,7 @@
         {% if jobs %}
 
             <p>Eligible jobs found for your profile.</p>
-
-            {% for job in jobs %}
-
+            {% for job in eligible_jobs %}
             <div class="job-card">
 
                 <h3>{{ job.title }}</h3>
